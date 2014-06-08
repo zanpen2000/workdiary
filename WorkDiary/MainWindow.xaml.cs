@@ -168,21 +168,24 @@ namespace WorkDiary
 
         void mailSendCmdBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-             _busy.IsBusy = true;
-             _busy.BusyContent = "正在保存日志...";
+            BackgroundWorker bw = new BackgroundWorker();
 
-            Task.Factory.StartNew(() =>
+            bw.DoWork += (x, y) =>
             {
                 this.Dispatcher.Invoke(() =>
                 {
+                    _busy.BusyContent = "正在保存配置文件...";
+                    SaveConfig();
+
+                    _busy.BusyContent = "正在保存日志...";
+
                     using (ExcelUnit excel = new ExcelUnit(this.oriExcelFile.Text))
                     {
                         excel.SaveAs(Person, tNewFileName.Text);
                     }
 
-                    _busy.BusyContent = "正在保存配置文件...";
-                    SaveConfig();
                     _busy.BusyContent = "正在发送日志...";
+
                     Email email = new Email();
                     email.host = "smtp.gmail.com";
                     email.mailFrom = this.MailUser;
@@ -196,22 +199,16 @@ namespace WorkDiary
                     {
                         this.Dispatcher.InvokeAsync(() =>
                         {
-                            _busy.BusyContent = "操作完成";
                             _busy.IsBusy = false;
-                            if (ee.Error != null)
-                            {
-                                MessageBox.Show(this, "发送失败:\r\n" + ee.Error.Message);
-                            }
-                            else
-                            {
-                                MessageBox.Show(this, "发送成功");
-                            }
-
+                            string msg = ee.Error != null ? "发送失败:\r\n" + ee.Error.Message : "发送成功";
+                            MessageBox.Show(this, msg);
                         });
                     }));
-
                 });
-            });
+            };
+
+            bw.RunWorkerAsync();
+            _busy.IsBusy = true;
         }
 
         private void SaveConfig()
@@ -231,7 +228,7 @@ namespace WorkDiary
         {
             e.CanExecute = (string.IsNullOrEmpty(this.tReceiver.Text) ||
                 string.IsNullOrEmpty(this.emailUser.Text) ||
-                string.IsNullOrEmpty(this.emailpwd.Password))||
+                string.IsNullOrEmpty(this.emailpwd.Password)) ||
                 oriExcelFile.Text.Trim().Equals(tNewFileName.Text.Trim())
             ? false : true;
             e.Handled = true;

@@ -17,7 +17,7 @@ namespace WorkDiary
                 string filename = values[0].ToString();
                 string filename1 = filename.Substring(0, filename.Length - 12);
 
-                string date = ((Person)values[1]).Date;
+                string date = values[1].ToString();
 
                 var q = from n in date.Split('/')
                         select n.PadLeft(2, '0');

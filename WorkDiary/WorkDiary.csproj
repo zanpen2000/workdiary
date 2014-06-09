@@ -109,71 +109,9 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="Xceed.Wpf.AvalonDock, Version=2.2.14272.0, Culture=neutral, PublicKeyToken=ba83ff368b7563c6, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Extended.Wpf.Toolkit.Plus.2.2.0\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Aero, Version=2.2.14272.0, Culture=neutral, PublicKeyToken=ba83ff368b7563c6, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Extended.Wpf.Toolkit.Plus.2.2.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Metro, Version=2.2.14272.0, Culture=neutral, PublicKeyToken=ba83ff368b7563c6, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Extended.Wpf.Toolkit.Plus.2.2.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.AvalonDock.Themes.MetroAccent">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.Plus.2.2.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.MetroAccent.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Office2007">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.Plus.2.2.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.Office2007.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010, Version=2.2.14272.0, Culture=neutral, PublicKeyToken=ba83ff368b7563c6, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Extended.Wpf.Toolkit.Plus.2.2.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.DataGrid, Version=2.2.14272.0, Culture=neutral, PublicKeyToken=ba83ff368b7563c6, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Extended.Wpf.Toolkit.Plus.2.2.0\lib\net40\Xceed.Wpf.DataGrid.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.DataGrid.Themes.Metro">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.Plus.2.2.0\lib\net40\Xceed.Wpf.DataGrid.Themes.Metro.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.DataGrid.Themes.Office2007">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.Plus.2.2.0\lib\net40\Xceed.Wpf.DataGrid.Themes.Office2007.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.ListBox">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.Plus.2.2.0\lib\net40\Xceed.Wpf.ListBox.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.ListBox.Themes.LiveExplorer">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.Plus.2.2.0\lib\net40\Xceed.Wpf.ListBox.Themes.LiveExplorer.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.ListBox.Themes.Metro">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.Plus.2.2.0\lib\net40\Xceed.Wpf.ListBox.Themes.Metro.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.ListBox.Themes.Office2007">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.Plus.2.2.0\lib\net40\Xceed.Wpf.ListBox.Themes.Office2007.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.ListBox.Themes.WMP11">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.Plus.2.2.0\lib\net40\Xceed.Wpf.ListBox.Themes.WMP11.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.Themes">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.Plus.2.2.0\lib\net40\Xceed.Wpf.Themes.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.Themes.Metro">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.Plus.2.2.0\lib\net40\Xceed.Wpf.Themes.Metro.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.Themes.Office2007">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.Plus.2.2.0\lib\net40\Xceed.Wpf.Themes.Office2007.dll</HintPath>
-    </Reference>
     <Reference Include="Xceed.Wpf.Toolkit, Version=2.2.14272.0, Culture=neutral, PublicKeyToken=ba83ff368b7563c6, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Extended.Wpf.Toolkit.Plus.2.2.0\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.Toolkit.Themes.Metro">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.Plus.2.2.0\lib\net40\Xceed.Wpf.Toolkit.Themes.Metro.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.Toolkit.Themes.Office2007">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.Plus.2.2.0\lib\net40\Xceed.Wpf.Toolkit.Themes.Office2007.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

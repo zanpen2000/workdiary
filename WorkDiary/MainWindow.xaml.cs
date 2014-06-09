@@ -166,49 +166,41 @@ namespace WorkDiary
             e.Handled = true;
         }
 
-        void mailSendCmdBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        async void mailSendCmdBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            BackgroundWorker bw = new BackgroundWorker();
-
-            bw.DoWork += (x, y) =>
+            string filename = this.oriExcelFile.Text;
+            _busy.IsBusy = true;
+            _busy.BusyContent = "正在保存配置文件...";
+            SaveConfig();
+            _busy.BusyContent = "正在保存日志...";
+            await Task.Factory.StartNew(() =>
             {
-                this.Dispatcher.Invoke(() =>
+                using (ExcelUnit excel = new ExcelUnit(filename))
                 {
-                    _busy.BusyContent = "正在保存配置文件...";
-                    SaveConfig();
-
-                    _busy.BusyContent = "正在保存日志...";
-
-                    using (ExcelUnit excel = new ExcelUnit(this.oriExcelFile.Text))
+                    this.Dispatcher.InvokeAsync(() =>
                     {
                         excel.SaveAs(Person, tNewFileName.Text);
-                    }
+                        _busy.BusyContent = "正在发送日志...";
 
-                    _busy.BusyContent = "正在发送日志...";
+                        Email email = new Email();
+                        email.host = "smtp.gmail.com";
+                        email.mailFrom = this.MailUser;
+                        email.mailPwd = this.emailpwd.Password;
+                        email.mailSubject = System.IO.Path.GetFileNameWithoutExtension(this.tNewFileName.Text) + " " + Person.PersonName;
+                        email.mailToArray = this.MailTo.Split(';');
 
-                    Email email = new Email();
-                    email.host = "smtp.gmail.com";
-                    email.mailFrom = this.MailUser;
-                    email.mailPwd = this.emailpwd.Password;
-                    email.mailSubject = System.IO.Path.GetFileNameWithoutExtension(this.tNewFileName.Text) + " " + Person.PersonName;
-                    email.mailToArray = this.MailTo.Split(';');
+                        email.attachmentsPath = new string[] { this.tNewFileName.Text };
 
-                    email.attachmentsPath = new string[] { this.tNewFileName.Text };
-
-                    email.SendAsync(new System.Net.Mail.SendCompletedEventHandler((obj, ee) =>
-                    {
-                        this.Dispatcher.InvokeAsync(() =>
+                        email.SendAsync(new System.Net.Mail.SendCompletedEventHandler((obj, ee) =>
                         {
-                            _busy.IsBusy = false;
                             string msg = ee.Error != null ? "发送失败:\r\n" + ee.Error.Message : "发送成功";
+                            _busy.BusyContent = msg;
+                            _busy.IsBusy = false;
                             MessageBox.Show(this, msg);
-                        });
-                    }));
-                });
-            };
-
-            bw.RunWorkerAsync();
-            _busy.IsBusy = true;
+                        }));
+                    });
+                }
+            });
         }
 
         private void SaveConfig()
@@ -276,19 +268,26 @@ namespace WorkDiary
             e.Handled = true;
         }
 
-        void ReadExcel(string excelFilename)
+        async void ReadExcel(string excelFilename)
         {
             if (!System.IO.File.Exists(excelFilename)) return;
+            _busy.BusyContent = "正在加载文档，请稍候...";
+            _busy.IsBusy = true;
 
-            this.Dispatcher.InvokeAsync(() =>
+            await Task.Factory.StartNew(() =>
             {
                 using (ExcelUnit excel = new ExcelUnit(excelFilename))
                 {
-                    Person = excel.Read();
+                    this.Dispatcher.InvokeAsync(() =>
+                    {
+                        Person = excel.Read();
+
+                    }).Completed += (o, oe) =>
+                    {
+                        _busy.IsBusy = false;
+                    };
                 }
-
             });
-
 
         }
 
@@ -299,20 +298,8 @@ namespace WorkDiary
             openFileDialog.Filter = "文件（.xls）|*.xls";//文件扩展名
             if ((bool)openFileDialog.ShowDialog().GetValueOrDefault())
             {
-                //这里为什么不显示
-
-                _busy.BusyContent = "正在加载文档，请稍候...";
-                _busy.IsBusy = true;
-
-                this.Dispatcher.InvokeAsync(() =>
-                {
-                    this.oriExcelFile.Text = openFileDialog.FileName;
-                    ReadExcel(this.oriExcelFile.Text);
-
-                }, DispatcherPriority.Background).Completed += (o, oe) =>
-                {
-                    _busy.IsBusy = false;
-                };
+                this.oriExcelFile.Text = openFileDialog.FileName;
+                ReadExcel(this.oriExcelFile.Text);
             }
             e.Handled = true;
         }

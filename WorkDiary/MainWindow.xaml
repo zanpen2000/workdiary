@@ -5,7 +5,7 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:lib="clr-namespace:ClassLibrary;assembly=ClassLibrary"
         Title="达意科技工作日志" Height="768" Width="1024"
-        x:Name="mainWindow" Icon="20140607111221823_easyicon_net_128.ico"
+        x:Name="mainWindow" Icon="apple.ico"
         WindowStartupLocation="CenterScreen">
     <Grid x:Name="mainGrid"  >
         <Grid.RowDefinitions>
@@ -69,9 +69,10 @@
         </GroupBox>
         <TextBox x:Name="tDiary" Text="{Binding Person.DiaryContent, Mode=TwoWay}"  Grid.Row="5" Grid.Column="3" Grid.RowSpan="2" TextWrapping="Wrap" AcceptsReturn="True"/>
         <Button x:Name="btnSend" Content="发送"  Grid.Row="8" Grid.Column="5"/>
-        <StackPanel Grid.Column="1" Grid.Row="5" Orientation="Horizontal" VerticalAlignment="Top">
-            <TextBox x:Name="g1" Height="25" Width="50" Margin="2" Text="{Binding ContentCell, Mode=TwoWay}"/>
-            <Button x:Name="btnRead" Content="->" Height="25"/>
+        <StackPanel Grid.Column="1" Grid.Row="5" Orientation="Vertical" VerticalAlignment="Top">
+            <TextBlock Text="内容位置"/>
+            <TextBox x:Name="g1" Height="25" Margin="2" Text="{Binding ContentCell, Mode=TwoWay}"/>
+            <Button x:Name="btnRead" Content="Read ->" Height="25"/>
         </StackPanel>
         <xctk:BusyIndicator x:Name="_busy" IsBusy="False" Grid.Row="0" Grid.Column="0"  Grid.RowSpan="100" Grid.ColumnSpan="100"/>
     </Grid>

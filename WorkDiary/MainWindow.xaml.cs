@@ -262,7 +262,7 @@ namespace WorkDiary
 
         void readCmdBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = string.IsNullOrEmpty(this.g1.Text) ? false : true;
+            e.CanExecute = string.IsNullOrEmpty(this.g1.Text) || string.IsNullOrEmpty(this.oriExcelFile.Text) ? false : true;
             e.Handled = true;
         }
 

@@ -70,7 +70,7 @@
         <TextBox x:Name="tDiary" Text="{Binding Person.DiaryContent, Mode=TwoWay}"  Grid.Row="5" Grid.Column="3" Grid.RowSpan="2" TextWrapping="Wrap" AcceptsReturn="True"/>
         <Button x:Name="btnSend" Content="发送"  Grid.Row="8" Grid.Column="5"/>
         <StackPanel Grid.Column="1" Grid.Row="5" Orientation="Vertical" VerticalAlignment="Top">
-            <TextBlock Text="内容位置"/>
+            <TextBlock Text="日志内容位置"/>
             <TextBox x:Name="g1" Height="25" Margin="2" Text="{Binding ContentCell, Mode=TwoWay}"/>
             <Button x:Name="btnRead" Content="Read ->" Height="25"/>
         </StackPanel>

@@ -4,7 +4,7 @@
         xmlns:local="clr-namespace:WorkDiary"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:lib="clr-namespace:ClassLibrary;assembly=ClassLibrary"
-        Title="MainWindow" Height="768" Width="1024"
+        Title="达意科技工作日志" Height="768" Width="1024"
         x:Name="mainWindow" Icon="20140607111221823_easyicon_net_128.ico"
         WindowStartupLocation="CenterScreen">
     <Grid x:Name="mainGrid"  >

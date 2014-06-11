@@ -6,7 +6,7 @@
         xmlns:lib="clr-namespace:ClassLibrary;assembly=ClassLibrary"
         Title="达意科技工作日志" Height="768" Width="1024"
         x:Name="mainWindow" Icon="apple.ico"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen" Loaded="mainWindow_Loaded">
     <Grid x:Name="mainGrid"  >
         <Grid.RowDefinitions>
             <RowDefinition Height="5"/>
@@ -40,7 +40,7 @@
 
         <TextBlock Text="另存路径：" Grid.Row="7" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <TextBox x:Name="tNewFileName" Grid.Row="7" Grid.Column="3" FontWeight="Bold" IsReadOnly="True" Background="Cornsilk"/>
-        <Button x:Name="btnSaveAs" Content="保存" Grid.Row="7" Grid.Column="5" Visibility="Hidden"/>
+        <Button x:Name="btnSaveAs" Content="保存" Grid.Row="7" Grid.Column="5" />
         <GroupBox Header="邮件设置" Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="3" >
             <Grid x:Name="mailGrid">
                 <Grid.RowDefinitions>

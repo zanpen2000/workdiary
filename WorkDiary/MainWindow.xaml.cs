@@ -1,11 +1,15 @@
 ﻿using ClassLibrary;
 using Microsoft.Win32;
+using System;
 using System.ComponentModel;
 using System.Configuration;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Interop;
+using System.Windows.Media;
 
 namespace WorkDiary
 {
@@ -23,6 +27,7 @@ namespace WorkDiary
         RoutedCommand ReadCommand = new RoutedCommand("Read", typeof(MainWindow));
         RoutedCommand MailSendCommand = new RoutedCommand("SendMail", typeof(MainWindow));
         RoutedCommand ReadExcelCommand = new RoutedCommand("ReadExcel", typeof(MainWindow));
+        
 
         private Person _person;
         public Person Person
@@ -41,6 +46,8 @@ namespace WorkDiary
         public MainWindow()
         {
             InitializeComponent();
+
+            
 
             var task = Task.Run(() =>
             {
@@ -69,6 +76,8 @@ namespace WorkDiary
             {
                 DataContext = this;
             });
+
+           
         }
 
         private void SetCommandBinding()
@@ -98,9 +107,19 @@ namespace WorkDiary
             mailSendCmdBinding.CanExecute += mailSendCmdBinding_CanExecute;
             mailSendCmdBinding.Executed += mailSendCmdBinding_Executed;
 
+
+            CommandBinding saveCommandBinding = new CommandBinding();
+            saveCommandBinding.Command = ApplicationCommands.Save;
+            btnSaveAs.Command = ApplicationCommands.Save;
+            btnSaveAs.CommandTarget = this.tNewFileName;
+            
+            saveCommandBinding.CanExecute += saveCommandBinding_CanExecute;
+            saveCommandBinding.Executed += saveCommandBinding_Executed;
+
             this.mainWindow.CommandBindings.Add(browseCmdBinding);
             this.mainWindow.CommandBindings.Add(readCmdBinding);
             this.mainWindow.CommandBindings.Add(mailSendCmdBinding);
+            this.mainWindow.CommandBindings.Add(saveCommandBinding);
 
             this.oriExcelFile.TextChanged += (o, e) =>
             {
@@ -109,6 +128,21 @@ namespace WorkDiary
                     ReadExcel(this.oriExcelFile.Text);
                 }
             };
+        }
+
+        async void saveCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            await SaveAsExcel(tNewFileName.Text);
+            e.Handled = true;
+        }
+
+        void saveCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = (!string.IsNullOrEmpty(oriExcelFile.Text) &&
+                !string.IsNullOrEmpty(tNewFileName.Text) &&
+                !oriExcelFile.Text.Equals(tNewFileName.Text));
+
+            e.Handled = true;
         }
 
         async void mailSendCmdBinding_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -230,6 +264,8 @@ namespace WorkDiary
 
                         //自动设置为当前日期
                         Person.Date = System.DateTime.Now.ToShortDateString();
+
+    
                     };
                 }
             });
@@ -273,5 +309,56 @@ namespace WorkDiary
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct MARGINS
+        {
+            public int cxLeftWidth;
+            public int cxRightWidth;
+            public int cyTopHeight;
+            public int cyBottomHeight;
+        };
+
+        [DllImport("DwmApi.dll")]
+        public static extern int DwmExtendFrameIntoClientArea(
+            IntPtr hwnd,
+            ref MARGINS pMarInset);
+
+        private void ExtendAeroGlass(Window window)
+        {
+            try
+            {
+                // 为WPF程序获取窗口句柄
+                IntPtr mainWindowPtr = new WindowInteropHelper(window).Handle;
+                HwndSource mainWindowSrc = HwndSource.FromHwnd(mainWindowPtr);
+                mainWindowSrc.CompositionTarget.BackgroundColor = Colors.Transparent;
+
+                // 设置Margins
+                MARGINS margins = new MARGINS();
+
+                // 扩展Aero Glass
+                margins.cxLeftWidth = -1;
+                margins.cxRightWidth = -1;
+                margins.cyTopHeight = -1;
+                margins.cyBottomHeight = -1;
+
+                int hr = DwmExtendFrameIntoClientArea(mainWindowSrc.Handle, ref margins);
+                if (hr < 0)
+                {
+                    MessageBox.Show("DwmExtendFrameIntoClientArea Failed");
+                }
+            }
+            catch (DllNotFoundException)
+            {
+                Application.Current.MainWindow.Background = Brushes.White;
+            }
+        }
+
+        private void mainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.Background = Brushes.Transparent;
+            ExtendAeroGlass(this);
+        }
     }
 }

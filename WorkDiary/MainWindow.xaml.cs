@@ -1,23 +1,11 @@
 ﻿using ClassLibrary;
 using Microsoft.Win32;
-using NetOffice.ExcelApi;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.ComponentModel;
+using System.Configuration;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Configuration;
-using System.ComponentModel;
-using System.Windows.Threading;
 
 namespace WorkDiary
 {
@@ -85,11 +73,6 @@ namespace WorkDiary
 
         private void SetCommandBinding()
         {
-            CommandBinding readExcelCmdBinding = new CommandBinding();
-            readExcelCmdBinding.Command = ReadExcelCommand;
-            readExcelCmdBinding.Executed += readExcelCmdBinding_Executed;
-            readExcelCmdBinding.CanExecute += readExcelCmdBinding_CanExecute;
-
             this.btnBrowser.Command = BrowseCommand;
             this.BrowseCommand.InputGestures.Add(new KeyGesture(Key.B, ModifierKeys.Alt));
             this.btnBrowser.CommandTarget = this.oriExcelFile;
@@ -128,20 +111,6 @@ namespace WorkDiary
             };
         }
 
-
-
-        void readExcelCmdBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = System.IO.File.Exists(this.oriExcelFile.Text) ? true : false;
-            e.Handled = true;
-        }
-
-        async void readExcelCmdBinding_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            await ReadExcel(this.oriExcelFile.Text);
-            e.Handled = true;
-        }
-
         async void mailSendCmdBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             string filename = this.oriExcelFile.Text;
@@ -149,7 +118,7 @@ namespace WorkDiary
             await SaveAsExcel(tNewFileName.Text);
 
             _busy.IsBusy = true;
-            await Task.Factory.StartNew(() =>
+            await Task.Run(() =>
             {
                 this.Dispatcher.InvokeAsync(() =>
                 {
@@ -182,7 +151,7 @@ namespace WorkDiary
             _busy.IsBusy = true;
             _busy.BusyContent = "正在保存配置文件...";
 
-            await Task.Factory.StartNew(() =>
+            await Task.Run(() =>
             {
                 var conf = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
                 conf.AppSettings.Settings["lastfilename"].Value = LastFileName;
@@ -247,7 +216,7 @@ namespace WorkDiary
             _busy.BusyContent = "正在加载文档，请稍候...";
             _busy.IsBusy = true;
 
-            await Task.Factory.StartNew(() =>
+            await Task.Run(() =>
             {
                 using (ExcelUnit excel = new ExcelUnit(excelFilename))
                 {
@@ -258,6 +227,9 @@ namespace WorkDiary
                     }).Completed += (o, oe) =>
                     {
                         _busy.IsBusy = false;
+
+                        //自动设置为当前日期
+                        Person.Date = System.DateTime.Now.ToShortDateString();
                     };
                 }
             });

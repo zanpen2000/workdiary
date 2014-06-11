@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ClassLibrary;
-using Microsoft.Win32;
+﻿using ClassLibrary;
 using NetOffice.ExcelApi;
+using System;
 using System.Configuration;
+using System.Threading.Tasks;
 
 namespace WorkDiary
 {
@@ -82,6 +78,32 @@ namespace WorkDiary
             }
             return person;
         }
+
+        internal async Task<Person> ReadAsync()
+        {
+            WorkBook = ExcelApp.Workbooks.Open(ExcelFilename);
+            WorkSheet = (Worksheet)WorkBook.Worksheets[1];
+
+            Person person = new Person();
+            try
+            {
+                person.Id = WorkSheet.Range(cellInfo.IdCell).Value2.ToString();
+                person.PersonName = WorkSheet.Range(cellInfo.NameCell).Value2.ToString();
+                person.Department = WorkSheet.Range(cellInfo.DepartCell).Value2.ToString();
+                person.Company = WorkSheet.Range(cellInfo.CompanyCell).Value2.ToString();
+                person.Date = DateTime.FromOADate((double)WorkSheet.Range(cellInfo.DateCell).Value2).ToShortDateString();
+                person.DiaryContent = WorkSheet.Range(cellInfo.ContentCell).Value2.ToString();
+            }
+            catch { }
+            finally
+            {
+                WorkBook.Close();
+            }
+            return person;
+        }
+
+
+
 
         internal bool SaveAs(string filename)
         {

@@ -4,7 +4,7 @@
         xmlns:local="clr-namespace:WorkDiary"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:lib="clr-namespace:ClassLibrary;assembly=ClassLibrary"
-        Title="达意科技工作日志" Height="768" Width="1024"
+        Title="达意科技工作日志" Height="580" Width="900"
         x:Name="mainWindow" Icon="apple.ico"
         WindowStartupLocation="CenterScreen" Loaded="mainWindow_Loaded">
     <Grid x:Name="mainGrid"  >
@@ -33,14 +33,14 @@
 
         <TextBlock Text="参考模板:" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         <TextBox x:Name="oriExcelFile" Text="{Binding Path=LastFileName}" FontWeight="Light" Grid.Row="1" Grid.Column="3" VerticalAlignment="Center"/>
-        <Button x:Name="btnBrowser" Content="浏览" Grid.Row="1" Grid.Column="5" VerticalAlignment="Center"/>
+        <Button x:Name="btnBrowser" Content="浏览(B)" Grid.Row="1" Grid.Column="5" VerticalAlignment="Center"/>
         <local:PersonUI x:Name="personUI" 
                         DataContext="{Binding Path=Person,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" 
                         Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="2" />
 
         <TextBlock Text="另存路径：" Grid.Row="7" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <TextBox x:Name="tNewFileName" Grid.Row="7" Grid.Column="3" FontWeight="Bold" IsReadOnly="True" Background="Cornsilk"/>
-        <Button x:Name="btnSaveAs" Content="保存" Grid.Row="7" Grid.Column="5" />
+        <Button x:Name="btnSaveAs" Content="保存(S)" Grid.Row="7" Grid.Column="5" />
         <GroupBox Header="邮件设置" Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="3" >
             <Grid x:Name="mailGrid">
                 <Grid.RowDefinitions>
@@ -68,7 +68,7 @@
             </Grid>
         </GroupBox>
         <TextBox x:Name="tDiary" Text="{Binding Person.DiaryContent, Mode=TwoWay}"  Grid.Row="5" Grid.Column="3" Grid.RowSpan="2" TextWrapping="Wrap" AcceptsReturn="True"/>
-        <Button x:Name="btnSend" Content="发送"  Grid.Row="8" Grid.Column="5"/>
+        <Button x:Name="btnSend" Content="发送(M)"  Grid.Row="8" Grid.Column="5"/>
         <StackPanel Grid.Column="1" Grid.Row="5" Orientation="Vertical" VerticalAlignment="Top">
             <TextBlock Text="日志内容位置"/>
             <TextBox x:Name="g1" Height="25" Margin="2" Text="{Binding ContentCell, Mode=TwoWay}"/>

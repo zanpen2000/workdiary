@@ -12,7 +12,7 @@ namespace WorkDiary
     public class ExcelUnit : IDisposable
     {
 
-        CellInfo cellInfo;
+        public CellInfo cellInfo { get; set; }
         NetOffice.ExcelApi.Application ExcelApp;
         NetOffice.ExcelApi.Workbook WorkBook;
         Worksheet WorkSheet;

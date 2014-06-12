@@ -27,7 +27,7 @@ namespace WorkDiary
         RoutedCommand ReadCommand = new RoutedCommand("Read", typeof(MainWindow));
         RoutedCommand MailSendCommand = new RoutedCommand("SendMail", typeof(MainWindow));
         RoutedCommand ReadExcelCommand = new RoutedCommand("ReadExcel", typeof(MainWindow));
-        
+
 
         private Person _person;
         public Person Person
@@ -46,8 +46,6 @@ namespace WorkDiary
         public MainWindow()
         {
             InitializeComponent();
-
-            
 
             var task = Task.Run(() =>
             {
@@ -77,7 +75,7 @@ namespace WorkDiary
                 DataContext = this;
             });
 
-           
+
         }
 
         private void SetCommandBinding()
@@ -112,7 +110,7 @@ namespace WorkDiary
             saveCommandBinding.Command = ApplicationCommands.Save;
             btnSaveAs.Command = ApplicationCommands.Save;
             btnSaveAs.CommandTarget = this.tNewFileName;
-            
+
             saveCommandBinding.CanExecute += saveCommandBinding_CanExecute;
             saveCommandBinding.Executed += saveCommandBinding_Executed;
 
@@ -133,15 +131,22 @@ namespace WorkDiary
         async void saveCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             await SaveAsExcel(tNewFileName.Text);
+            await _saveConfig();
             e.Handled = true;
         }
 
         void saveCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = (!string.IsNullOrEmpty(oriExcelFile.Text) &&
-                !string.IsNullOrEmpty(tNewFileName.Text) &&
-                !oriExcelFile.Text.Equals(tNewFileName.Text));
+            bool result = false;
 
+            if (!string.IsNullOrEmpty(oriExcelFile.Text) && !string.IsNullOrEmpty(tNewFileName.Text))
+            {
+                if (Person != null && !String.IsNullOrEmpty(Person.Date))
+                {
+                    result = DateTime.Parse(Person.Date).ToString("yyyy/MM/dd").Equals(DateTime.Now.ToString("yyyy/MM/dd"));
+                }
+            }
+            e.CanExecute = result;
             e.Handled = true;
         }
 
@@ -205,8 +210,7 @@ namespace WorkDiary
         {
             e.CanExecute = (string.IsNullOrEmpty(this.tReceiver.Text) ||
                 string.IsNullOrEmpty(this.emailUser.Text) ||
-                string.IsNullOrEmpty(this.emailpwd.Password)) ||
-                oriExcelFile.Text.Trim().Equals(tNewFileName.Text.Trim())
+                string.IsNullOrEmpty(this.emailpwd.Password))
             ? false : true;
             e.Handled = true;
         }
@@ -265,7 +269,7 @@ namespace WorkDiary
                         //自动设置为当前日期
                         Person.Date = System.DateTime.Now.ToShortDateString();
 
-    
+
                     };
                 }
             });
@@ -310,55 +314,56 @@ namespace WorkDiary
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        #region 毛玻璃
+        //[StructLayout(LayoutKind.Sequential)]
+        //public struct MARGINS
+        //{
+        //    public int cxLeftWidth;
+        //    public int cxRightWidth;
+        //    public int cyTopHeight;
+        //    public int cyBottomHeight;
+        //};
 
-        [StructLayout(LayoutKind.Sequential)]
-        public struct MARGINS
-        {
-            public int cxLeftWidth;
-            public int cxRightWidth;
-            public int cyTopHeight;
-            public int cyBottomHeight;
-        };
+        //[DllImport("DwmApi.dll")]
+        //public static extern int DwmExtendFrameIntoClientArea(
+        //    IntPtr hwnd,
+        //    ref MARGINS pMarInset);
 
-        [DllImport("DwmApi.dll")]
-        public static extern int DwmExtendFrameIntoClientArea(
-            IntPtr hwnd,
-            ref MARGINS pMarInset);
+        //private void ExtendAeroGlass(Window window)
+        //{
+        //    try
+        //    {
+        //        // 为WPF程序获取窗口句柄
+        //        IntPtr mainWindowPtr = new WindowInteropHelper(window).Handle;
+        //        HwndSource mainWindowSrc = HwndSource.FromHwnd(mainWindowPtr);
+        //        mainWindowSrc.CompositionTarget.BackgroundColor = Colors.Transparent;
 
-        private void ExtendAeroGlass(Window window)
-        {
-            try
-            {
-                // 为WPF程序获取窗口句柄
-                IntPtr mainWindowPtr = new WindowInteropHelper(window).Handle;
-                HwndSource mainWindowSrc = HwndSource.FromHwnd(mainWindowPtr);
-                mainWindowSrc.CompositionTarget.BackgroundColor = Colors.Transparent;
+        //        // 设置Margins
+        //        MARGINS margins = new MARGINS();
 
-                // 设置Margins
-                MARGINS margins = new MARGINS();
+        //        // 扩展Aero Glass
+        //        margins.cxLeftWidth = -1;
+        //        margins.cxRightWidth = -1;
+        //        margins.cyTopHeight = -1;
+        //        margins.cyBottomHeight = -1;
 
-                // 扩展Aero Glass
-                margins.cxLeftWidth = -1;
-                margins.cxRightWidth = -1;
-                margins.cyTopHeight = -1;
-                margins.cyBottomHeight = -1;
+        //        int hr = DwmExtendFrameIntoClientArea(mainWindowSrc.Handle, ref margins);
+        //        if (hr < 0)
+        //        {
+        //            MessageBox.Show("DwmExtendFrameIntoClientArea Failed");
+        //        }
+        //    }
+        //    catch (DllNotFoundException)
+        //    {
+        //        Application.Current.MainWindow.Background = Brushes.White;
+        //    }
+        //}
 
-                int hr = DwmExtendFrameIntoClientArea(mainWindowSrc.Handle, ref margins);
-                if (hr < 0)
-                {
-                    MessageBox.Show("DwmExtendFrameIntoClientArea Failed");
-                }
-            }
-            catch (DllNotFoundException)
-            {
-                Application.Current.MainWindow.Background = Brushes.White;
-            }
-        }
-
+        #endregion
         private void mainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            this.Background = Brushes.Transparent;
-            ExtendAeroGlass(this);
+            //this.Background = Brushes.Transparent;
+            //ExtendAeroGlass(this);
         }
     }
 }

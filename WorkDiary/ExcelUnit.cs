@@ -12,7 +12,7 @@ namespace WorkDiary
     public class ExcelUnit : IDisposable
     {
 
-        public CellInfo cellInfo { get; set; }
+        CellInfo cellInfo { get; set; }
         NetOffice.ExcelApi.Application ExcelApp;
         NetOffice.ExcelApi.Workbook WorkBook;
         Worksheet WorkSheet;
@@ -173,7 +173,7 @@ namespace WorkDiary
         }
     }
 
-    class CellInfo
+    class CellInfo 
     {
         public string IdCell { get; set; }
         public string NameCell { get; set; }
@@ -191,5 +191,7 @@ namespace WorkDiary
             ContentCell = ConfigurationManager.AppSettings.Get("contentcell");
             DateCell = ConfigurationManager.AppSettings.Get("datecell");
         }
+
+
     }
 }

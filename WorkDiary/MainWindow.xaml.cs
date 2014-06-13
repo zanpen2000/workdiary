@@ -21,7 +21,17 @@ namespace WorkDiary
         public string MailUser { get; set; }
         public string MailTo { get; set; }
         public string LastFileName { get; set; }
-        public string ContentCell { get; set; }
+
+        private string contentCell;
+        public string ContentCell
+        {
+            get { return contentCell; }
+            set
+            {
+                contentCell = value;
+                
+            }
+        }
 
         RoutedCommand BrowseCommand = new RoutedCommand("Browse", typeof(MainWindow));
         RoutedCommand ReadCommand = new RoutedCommand("Read", typeof(MainWindow));
@@ -130,8 +140,8 @@ namespace WorkDiary
 
         async void saveCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            await SaveAsExcel(tNewFileName.Text);
             await _saveConfig();
+            await SaveAsExcel(tNewFileName.Text);
             e.Handled = true;
         }
 
@@ -198,6 +208,8 @@ namespace WorkDiary
                 conf.AppSettings.Settings["mailto"].Value = MailTo;
                 conf.AppSettings.Settings["contentcell"].Value = ContentCell;
                 conf.Save();
+
+                
 
             }).ContinueWith((x) =>
             {

@@ -174,10 +174,11 @@ namespace WorkDiary
                     _busy.BusyContent = "正在发送日志...";
 
                     Email email = new Email();
-                    email.host = "smtp.gmail.com";
+                    email.host = "smtp.qq.com";
+                    email.port = 587;
                     email.mailFrom = this.MailUser;
                     email.mailPwd = this.emailpwd.Password;
-                    email.mailSubject = System.IO.Path.GetFileNameWithoutExtension(this.tNewFileName.Text) + " " + Person.PersonName;
+                    email.mailSubject = System.IO.Path.GetFileNameWithoutExtension(this.tNewFileName.Text) + "_" + Person.PersonName;
                     email.mailToArray = this.MailTo.Split(';');
 
                     email.attachmentsPath = new string[] { this.tNewFileName.Text };

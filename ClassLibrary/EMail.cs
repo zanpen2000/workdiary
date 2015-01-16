@@ -41,6 +41,8 @@ namespace ClassLibrary
         /// </summary>
         public string host { get; set; }
 
+        public int port { get; set; }
+
         /// <summary>
         /// 正文是否是html格式
         /// </summary>
@@ -119,7 +121,7 @@ namespace ClassLibrary
 
             //设置SMTP邮件服务器
             smtp.Host = host;
-            smtp.Port = 587;
+            smtp.Port = port;
             smtp.EnableSsl = true;
             smtp.SendCompleted += ac;
             smtp.SendAsync(myMail, null);
